@@ -6,4 +6,4 @@ export { resolveInteraction } from "./interactionManifest.js";
 export { isFlagEnabled, getFlagMeta, getAllFlags, getUsageLog, setFlagOverride, clearFlagOverrides } from "./feature-flags.js";
 export { getTagForType, computeTagFromJson } from "./component-mapper.js";
 export { mapJsonComponentToTemplate } from "./jsonComponent.mapper.js";
-export { getPluginManifest, getCachedPluginManifest } from "./pluginManifest.js";
+export { getPluginManifest, getCachedPluginManifest, setPluginManifest } from "./pluginManifest.js";

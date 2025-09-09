@@ -34,10 +34,15 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "prepublishOnly": "npm run build"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0",
+    "@types/node": "^20.0.0",
+    "jsdom": "^25.0.0"
   },
   "peerDependencies": {
     "musical-conductor": "*",
