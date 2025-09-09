@@ -1,6 +1,6 @@
 {
   "name": "@renderx-plugins/host-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Host SDK for RenderX plugins - provides conductor, event routing, and component mapping APIs",
   "keywords": [
@@ -15,8 +15,7 @@
   "author": "BPM Software Solutions",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BPMSoftwareSolutions/renderx-plugins-demo",
-    "directory": "packages/host-sdk"
+    "url": "https://github.com/BPMSoftwareSolutions/renderx-host-sdk"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

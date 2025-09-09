@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getTagForType, computeTagFromJson, setConfig } from '../src/component-mapper';
+import { getTagForType, computeTagFromJson, setConfig } from '../component-mapper';
 
 describe('Component Mapper', () => {
   beforeEach(() => {

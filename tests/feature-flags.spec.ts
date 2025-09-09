@@ -1,12 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { 
-  isFlagEnabled, 
-  getFlagMeta, 
-  getAllFlags, 
-  setFlagOverride, 
+import {
+  isFlagEnabled,
+  getFlagMeta,
+  getAllFlags,
+  setFlagOverride,
   clearFlagOverrides,
-  getUsageLog 
-} from '../src/feature-flags';
+  getUsageLog
+} from '../feature-flags';
 
 describe('Feature Flags', () => {
   beforeEach(() => {

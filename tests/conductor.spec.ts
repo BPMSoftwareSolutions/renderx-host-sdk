@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useConductor } from '../src/conductor';
+import { useConductor } from '../conductor';
 
 describe('useConductor', () => {
   beforeEach(() => {
