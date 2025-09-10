@@ -5,6 +5,42 @@ import type { TopicHandler, Unsubscribe } from "./EventRouter";
 import type { Route } from "./interactionManifest";
 import type { FlagMeta } from "./feature-flags";
 
+// Inventory API types
+export interface ComponentSummary {
+  id: string;
+  name: string;
+  tags?: string[];
+}
+
+export interface Component {
+  id: string;
+  name: string;
+  json: any;
+  tags?: string[];
+  metadata?: Record<string, any>;
+}
+
+export interface InventoryAPI {
+  listComponents(): Promise<ComponentSummary[]>;
+  getComponentById(id: string): Promise<Component | null>;
+  onInventoryChanged(callback: (components: ComponentSummary[]) => void): Unsubscribe;
+}
+
+// CSS Registry API types
+export interface CssClassDef {
+  name: string;
+  rules: string;
+  source?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface CssRegistryAPI {
+  hasClass(name: string): Promise<boolean>;
+  createClass(def: CssClassDef): Promise<void>;
+  updateClass(name: string, def: CssClassDef): Promise<void>;
+  onCssChanged(callback: (classes: CssClassDef[]) => void): Unsubscribe;
+}
+
 declare global {
   interface Window {
     renderxCommunicationSystem?: {
@@ -23,6 +59,8 @@ declare global {
         getAllFlags(): Record<string, FlagMeta>;
       };
       componentMapperConfig?: any;
+      inventory?: InventoryAPI;
+      cssRegistry?: CssRegistryAPI;
     };
   }
 }

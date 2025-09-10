@@ -32,11 +32,11 @@ describe('useConductor', () => {
     expect(conductor).toBe(mockConductor);
   });
 
-  it('should return mock conductor in SSR/Node environment', () => {
+  it('should return mock conductor in SSR/Node environment', async () => {
     // No window object (Node.js/SSR)
     const conductor = useConductor();
-    
+
     expect(typeof conductor.play).toBe('function');
-    expect(conductor.play()).resolves.toEqual({});
+    await expect(conductor.play()).resolves.toEqual({});
   });
 });

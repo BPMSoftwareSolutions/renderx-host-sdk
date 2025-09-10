@@ -7,3 +7,11 @@ export { isFlagEnabled, getFlagMeta, getAllFlags, getUsageLog, setFlagOverride, 
 export { getTagForType, computeTagFromJson } from "./component-mapper.js";
 export { mapJsonComponentToTemplate } from "./jsonComponent.mapper.js";
 export { getPluginManifest, getCachedPluginManifest, setPluginManifest } from "./pluginManifest.js";
+
+// Inventory API
+export { listComponents, getComponentById, onInventoryChanged, Inventory } from "./inventory.js";
+export type { ComponentSummary, Component, InventoryAPI } from "./types.js";
+
+// CSS Registry API
+export { hasClass, createClass, updateClass, onCssChanged, CssRegistry } from "./cssRegistry.js";
+export type { CssClassDef, CssRegistryAPI } from "./types.js";

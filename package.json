@@ -1,6 +1,6 @@
 {
   "name": "@renderx-plugins/host-sdk",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "type": "module",
   "description": "Host SDK for RenderX plugins - provides conductor, event routing, and component mapping APIs",
   "keywords": [
@@ -29,6 +29,7 @@
   "files": [
     "dist",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
