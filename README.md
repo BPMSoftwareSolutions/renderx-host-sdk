@@ -168,7 +168,48 @@ setMockCssClass({ name: 'test-class', rules: '.test-class { color: red; }' });
 
 ## Host wiring (providers)
 
-See docs/host-wiring.md for how to wire feature flags and optional providers for manifests/startup, and recommended subpath imports verified by CI.
+Quick start for providers:
+
+```ts
+import { setFeatureFlagsProvider, type FlagsProvider } from '@renderx-plugins/host-sdk';
+
+const flags: FlagsProvider = {
+  isFlagEnabled: (key) => false,
+  getFlagMeta: (key) => ({ status: 'off', created: '2024-01-01' }),
+  getAllFlags: () => ({})
+};
+setFeatureFlagsProvider(flags);
+```
+
+Optional providers (manifests/startup):
+
+```ts
+import {
+  setInteractionManifestProvider,
+  setTopicsManifestProvider,
+  setStartupStatsProvider,
+} from '@renderx-plugins/host-sdk';
+
+setInteractionManifestProvider({
+  resolveInteraction: (key) => ({ pluginId: 'MyPlugin', sequenceId: key + '-symphony' })
+});
+setTopicsManifestProvider({
+  getTopicDef: (key) => ({ routes: [{ pluginId: 'MyPlugin', sequenceId: key + '-symphony' }] })
+});
+setStartupStatsProvider({
+  async getPluginManifestStats() { return { pluginCount: 0 }; }
+});
+```
+
+Bundler-safe subpath imports:
+
+```ts
+import { initInteractionManifest } from '@renderx-plugins/host-sdk/core/manifests/interactionManifest';
+import { initTopicsManifest } from '@renderx-plugins/host-sdk/core/manifests/topicsManifest';
+import { getPluginManifestStats } from '@renderx-plugins/host-sdk/core/startup/startupValidation';
+```
+
+See docs/host-wiring.md for details and guidance.
 
 ## Host primitives (advanced)
 
