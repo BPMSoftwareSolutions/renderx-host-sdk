@@ -165,6 +165,11 @@ setMockCssClass({ name: 'test-class', rules: '.test-class { color: red; }' });
 - `react`: React 18+ for hook-based APIs
 
 
+
+## Host wiring (providers)
+
+See docs/host-wiring.md for how to wire feature flags and optional providers for manifests/startup, and recommended subpath imports verified by CI.
+
 ## Host primitives (advanced)
 
 For host applications that want a thin shell, internal primitives are now available via subpath exports under `core/*`:

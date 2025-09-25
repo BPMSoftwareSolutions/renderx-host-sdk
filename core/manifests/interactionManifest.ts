@@ -1,7 +1,20 @@
 // Interaction manifest loader (migrated from src/interactionManifest.ts)
-type Route = { pluginId: string; sequenceId: string };
+export type Route = { pluginId: string; sequenceId: string };
 let routes: Record<string, Route> = {};
 let loaded = false;
+
+export type InteractionManifestProvider = {
+	init?(): Promise<void>;
+	resolveInteraction(key: string): Route;
+	getRoutes?(): Record<string, Route>;
+	getStats?(): { loaded: boolean; routeCount: number };
+};
+
+let interactionProvider: InteractionManifestProvider | null = null;
+export function setInteractionManifestProvider(p: InteractionManifestProvider) {
+	interactionProvider = p;
+	loaded = true;
+}
 
 // Built-in defaults to guarantee test/runtime stability even if manifest isn't preloaded
 const DEFAULT_ROUTES: Record<string, Route> = {
@@ -74,11 +87,15 @@ async function loadManifest(): Promise<void> {
 }
 
 export async function initInteractionManifest(): Promise<void> {
-	if (!loaded) await loadManifest();
+	if (interactionProvider?.init) { try { await interactionProvider.init(); } catch {} }
+	if (!loaded && !interactionProvider) await loadManifest();
 }
 
 export function resolveInteraction(key: string): Route {
-	if (!loaded) {
+	if (interactionProvider) {
+		try { return interactionProvider.resolveInteraction(key); } catch {}
+	}
+	if (!loaded && !interactionProvider) {
 		// Lazy trigger load; not awaited to keep call sites simple. Tests should init explicitly.
 		// @ts-ignore
 		loadManifest();
@@ -88,12 +105,13 @@ export function resolveInteraction(key: string): Route {
 			loaded = true;
 		}
 	}
-	const r = routes[key] || DEFAULT_ROUTES[key];
+	const r = (routes && routes[key]) || DEFAULT_ROUTES[key];
 	if (!r) throw new Error(`Unknown interaction: ${key}`);
 	return r;
 }
 
 // Diagnostics for startup validation
 export function getInteractionManifestStats() {
+	if (interactionProvider?.getStats) { try { return interactionProvider.getStats(); } catch {} }
 	return { loaded, routeCount: Object.keys(routes).length };
 }
