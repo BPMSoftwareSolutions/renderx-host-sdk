@@ -19,7 +19,7 @@ import { useConductor } from '@renderx-plugins/host-sdk';
 
 function MyPlugin() {
   const conductor = useConductor();
-  
+
   // Play a sequence
   const result = await conductor.play('pluginId', 'sequenceId', data);
 }
@@ -163,6 +163,20 @@ setMockCssClass({ name: 'test-class', rules: '.test-class { color: red; }' });
 
 - `musical-conductor`: The orchestration engine
 - `react`: React 18+ for hook-based APIs
+
+
+## Host primitives (advanced)
+
+For host applications that want a thin shell, internal primitives are now available via subpath exports under `core/*`:
+
+```typescript
+import { initConductor } from '@renderx-plugins/host-sdk/core/conductor';
+import { EventRouter } from '@renderx-plugins/host-sdk/core/events/EventRouter';
+```
+
+Notes:
+- These APIs are intended for host integration and may assume a browser-like environment unless otherwise documented.
+- JSON sequence/catalog loading paths are discovered at runtime; see `core/environment/env.ts` for `HOST_ARTIFACTS_DIR` discovery used outside the browser.
 
 ## License
 

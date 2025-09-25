@@ -12,7 +12,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "resolveJsonModule": true
   },
   "include": [
     "index.ts",
@@ -24,7 +25,10 @@
     "feature-flags.ts",
     "component-mapper.ts",
     "jsonComponent.mapper.ts",
-    "types.ts"
+    "types.ts",
+    "types/**/*.d.ts",
+    "core/**/*.ts",
+    "core/**/*.tsx"
   ],
   "exclude": [
     "dist",
