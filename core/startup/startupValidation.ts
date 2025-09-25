@@ -1,8 +1,17 @@
 // Startup validation & lightweight artifact integrity helpers.
 // Migrated from src/startupValidation.ts during Phase 2 refactor.
 
+export type StartupStatsProvider = {
+	getPluginManifestStats(): Promise<{ pluginCount: number }>;
+	verifyArtifactsIntegrity?(devOnly?: boolean): Promise<null> | null;
+};
+
+let startupProvider: StartupStatsProvider | null = null;
+export function setStartupStatsProvider(p: StartupStatsProvider) { startupProvider = p; }
+
 // Lightweight manifest presence & counts for host startup logging
 export async function getPluginManifestStats() {
+	if (startupProvider) { try { return await startupProvider.getPluginManifestStats(); } catch {} }
 	try {
 		const isBrowser = typeof window !== 'undefined' && typeof (globalThis as any).fetch === 'function';
 		let json: any = null;
@@ -29,7 +38,7 @@ export async function getPluginManifestStats() {
 			} catch {}
 			// No raw import fallback when consumed from node_modules; rely on host-served artifacts only.
 		}
-		const plugins = Array.isArray(json.plugins) ? json.plugins : [];
+		const plugins = Array.isArray(json?.plugins) ? json.plugins : [];
 		return { pluginCount: plugins.length };
 	} catch (e) {
 		console.warn('[startupValidation] Failed reading plugin-manifest.json', e);
@@ -39,6 +48,7 @@ export async function getPluginManifestStats() {
 
 // Optional integrity check (dev only) – integrity file must be served from site root or copied to public
 export async function verifyArtifactsIntegrity(devOnly = true) {
+	if (startupProvider?.verifyArtifactsIntegrity) { try { return await startupProvider.verifyArtifactsIntegrity(devOnly); } catch {} }
 	try {
 		// @ts-ignore
 		if (devOnly && typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') return null;

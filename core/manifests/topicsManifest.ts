@@ -12,6 +12,19 @@ export interface TopicDef {
 let topics: Record<string, TopicDef> = {};
 let loaded = false;
 
+export type TopicsManifestProvider = {
+	init?(): Promise<void>;
+	getTopicDef(key: string): TopicDef | undefined;
+	getTopicsMap?(): Record<string, TopicDef>;
+	getStats?(): { loaded: boolean; topicCount: number };
+};
+
+let topicsProvider: TopicsManifestProvider | null = null;
+export function setTopicsManifestProvider(p: TopicsManifestProvider) {
+	topicsProvider = p;
+	loaded = true;
+}
+
 async function loadTopics(): Promise<void> {
 	try {
 		const isBrowser = typeof globalThis !== 'undefined' && typeof (globalThis as any).fetch === 'function';
@@ -46,11 +59,13 @@ async function loadTopics(): Promise<void> {
 }
 
 export async function initTopicsManifest(): Promise<void> {
-	if (!loaded) await loadTopics();
+	if (topicsProvider?.init) { try { await topicsProvider.init(); } catch {} }
+	if (!loaded && !topicsProvider) await loadTopics();
 }
 
 export function getTopicDef(key: string): TopicDef | undefined {
-	if (!loaded) { /* lazy kick */ loadTopics(); }
+	if (topicsProvider) { try { return topicsProvider.getTopicDef(key); } catch {} }
+	if (!loaded && !topicsProvider) { /* lazy kick */ loadTopics(); }
 	return topics[key];
 }
 
@@ -60,10 +75,14 @@ export function __setTopics(map: Record<string, TopicDef>) {
 	loaded = true;
 }
 
-export function getTopicsManifestStats() { return { loaded, topicCount: Object.keys(topics).length }; }
+export function getTopicsManifestStats() {
+	if (topicsProvider?.getStats) { try { return topicsProvider.getStats(); } catch {} }
+	return { loaded, topicCount: Object.keys(topics).length };
+}
 
 // Expose full topics map for internal callers that need to analyze the manifest
 // (kept out of public API surface; prefer getTopicDef for most use cases)
 export function getTopicsMap(): Record<string, TopicDef> {
+	if (topicsProvider?.getTopicsMap) { try { return topicsProvider.getTopicsMap(); } catch {} }
 	return topics;
 }
