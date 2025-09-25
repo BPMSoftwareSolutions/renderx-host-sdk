@@ -9,23 +9,55 @@ export interface TopicDef {
 	notes?: string;
 }
 
-// Static JSON import ensures synchronous availability for tests and early runtime callers
-// @ts-ignore - JSON assertion supported by bundler / TS
-import topicsManifestJson from '../../../topics-manifest.json' with { type: 'json' };
+let topics: Record<string, TopicDef> = {};
+let loaded = false;
 
-let topics: Record<string, TopicDef> = (topicsManifestJson as any)?.topics || {};
-let loaded = true;
+async function loadTopics(): Promise<void> {
+	try {
+		const isBrowser = typeof globalThis !== 'undefined' && typeof (globalThis as any).fetch === 'function';
+		if (isBrowser) {
+			const res = await fetch('/topics-manifest.json');
+			if (res.ok) {
+				const json = await res.json();
+				topics = (json as any)?.topics || {};
+				loaded = true;
+				return;
+			}
+		}
+		// Node/tests fallback: use artifactsDir if provided by env helper
+		try {
+			const envMod = await import(/* @vite-ignore */ '../environment/env');
+			const artifactsDir = (envMod as any).getArtifactsDir?.() || null;
+			if (artifactsDir) {
+				// @ts-ignore
+				const fs = await import('fs/promises');
+				// @ts-ignore
+				const path = await import('path');
+				const procAny: any = (globalThis as any).process;
+				const cwd = procAny && typeof procAny.cwd === 'function' ? procAny.cwd() : '';
+				const p = path.join(cwd, artifactsDir, 'topics-manifest.json');
+				const raw = await fs.readFile(p, 'utf-8').catch(() => null as any);
+				if (raw) { const json = JSON.parse(raw || '{}'); topics = (json as any)?.topics || {}; loaded = true; return; }
+			}
+		} catch {}
+	} catch {}
+	// Final fallback: empty set
+	loaded = true;
+}
 
-// No-op to keep previous API surface
-export async function initTopicsManifest(): Promise<void> { /* already loaded */ }
+export async function initTopicsManifest(): Promise<void> {
+	if (!loaded) await loadTopics();
+}
 
 export function getTopicDef(key: string): TopicDef | undefined {
+	if (!loaded) { /* lazy kick */ loadTopics(); }
 	return topics[key];
 }
 
 // test-only: allow injection of topics (maintain API)
 export function __setTopics(map: Record<string, TopicDef>) {
 	topics = map || {};
+	loaded = true;
 }
 
 export function getTopicsManifestStats() { return { loaded, topicCount: Object.keys(topics).length }; }

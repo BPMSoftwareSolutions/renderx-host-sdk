@@ -27,12 +27,7 @@ export async function getPluginManifestStats() {
 					if (raw) json = JSON.parse(raw || '{}');
 				}
 			} catch {}
-			if (!json) {
-				// @ts-ignore
-				const mod = await import(/* @vite-ignore */ '../../../public/plugins/plugin-manifest.json?raw');
-				const txt: string = (mod as any)?.default || (mod as any) || '{}';
-				json = JSON.parse(txt);
-			}
+			// No raw import fallback when consumed from node_modules; rely on host-served artifacts only.
 		}
 		const plugins = Array.isArray(json.plugins) ? json.plugins : [];
 		return { pluginCount: plugins.length };

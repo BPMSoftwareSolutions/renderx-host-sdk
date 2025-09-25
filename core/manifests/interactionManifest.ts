@@ -45,28 +45,32 @@ async function loadManifest(): Promise<void> {
 				return;
 			}
 		}
-		// Node/tests fallback: import raw JSON at repo root
-		// @ts-ignore - Vite raw JSON import
-		const mod = await import(/* @vite-ignore */ '../../../interaction-manifest.json?raw');
-		const text: string = (mod as any)?.default || (mod as any) || '{}';
-		const json = JSON.parse(text);
-		routes = json?.routes || {};
-		loaded = true;
-		return;
+		// Node/tests fallback: use artifactsDir if provided by env helper
+		try {
+			const envMod = await import(/* @vite-ignore */ '../environment/env');
+			const artifactsDir = (envMod as any).getArtifactsDir?.() || null;
+			if (artifactsDir) {
+				// @ts-ignore
+				const fs = await import('fs/promises');
+				// @ts-ignore
+				const path = await import('path');
+				const procAny: any = (globalThis as any).process;
+				const cwd = procAny && typeof procAny.cwd === 'function' ? procAny.cwd() : '';
+				const p = path.join(cwd, artifactsDir, 'interaction-manifest.json');
+				const raw = await fs.readFile(p, 'utf-8').catch(() => null as any);
+				if (raw) {
+					const json = JSON.parse(raw || '{}');
+					routes = json?.routes || {};
+					loaded = true;
+					return;
+				}
+			}
+		} catch {}
 	} catch {}
-	try {
-		// Fallback: direct JSON module import for test environments
-		// @ts-ignore
-		const jsonMod = await import(/* @vite-ignore */ '../../../interaction-manifest.json');
-		const json = (jsonMod as any)?.default || (jsonMod as any) || {};
-		routes = json?.routes || {};
-		loaded = true;
-		return;
-	} catch {
-		console.warn('[interactionManifest] Failed to load interaction-manifest.json; using defaults only');
-		routes = {};
-		loaded = true; // avoid retry storms; callers can handle missing keys
-	}
+	// Final fallback
+	console.warn('[interactionManifest] Failed to load interaction-manifest.json; using defaults only');
+	routes = {};
+	loaded = true; // avoid retry storms; callers can handle missing keys
 }
 
 export async function initInteractionManifest(): Promise<void> {
