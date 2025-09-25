@@ -19,6 +19,6 @@ jobs:
       - name: Vite smoke build (subpath imports)
         working-directory: smoke/vite-app
         run: |
-          npm ci
+          npm install --no-audit --no-fund
           npm run build
 
