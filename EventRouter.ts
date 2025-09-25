@@ -7,6 +7,15 @@ export type TopicHandler = (payload: any) => void;
 export type Unsubscribe = () => void;
 
 export const EventRouter = {
+  // v1 compatibility: provide a no-op init (delegates to host if available)
+  async init(): Promise<void> {
+    try {
+      if (typeof window !== "undefined") {
+        await (window.RenderX?.EventRouter as any)?.init?.();
+      }
+    } catch {}
+  },
+
   subscribe(topic: string, handler: TopicHandler): Unsubscribe {
     if (typeof window === "undefined") {
       // Node/SSR fallback
