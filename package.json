@@ -1,6 +1,6 @@
 {
   "name": "@renderx-plugins/host-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Host SDK for RenderX plugins - provides conductor, event routing, and component mapping APIs",
   "keywords": [
@@ -21,14 +21,24 @@
   "types": "./dist/index.d.ts",
   "private": false,
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./core/*": {
-      "types": "./dist/core/*/index.d.ts",
-      "import": "./dist/core/*/index.js"
-    }
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+
+    "./core/conductor": { "types": "./dist/core/conductor/index.d.ts", "import": "./dist/core/conductor/index.js" },
+    "./core/conductor/conductor": { "types": "./dist/core/conductor/conductor.d.ts", "import": "./dist/core/conductor/conductor.js" },
+    "./core/conductor/sequence-registration": { "types": "./dist/core/conductor/sequence-registration.d.ts", "import": "./dist/core/conductor/sequence-registration.js" },
+    "./core/conductor/runtime-loaders": { "types": "./dist/core/conductor/runtime-loaders.d.ts", "import": "./dist/core/conductor/runtime-loaders.js" },
+
+    "./core/events/EventRouter": { "types": "./dist/core/events/EventRouter.d.ts", "import": "./dist/core/events/EventRouter.js" },
+
+    "./core/manifests/interactionManifest": { "types": "./dist/core/manifests/interactionManifest.d.ts", "import": "./dist/core/manifests/interactionManifest.js" },
+    "./core/manifests/topicsManifest": { "types": "./dist/core/manifests/topicsManifest.d.ts", "import": "./dist/core/manifests/topicsManifest.js" },
+
+    "./core/startup/startupValidation": { "types": "./dist/core/startup/startupValidation.d.ts", "import": "./dist/core/startup/startupValidation.js" },
+
+    "./core/environment/env": { "types": "./dist/core/environment/env.d.ts", "import": "./dist/core/environment/env.js" },
+    "./core/environment/feature-flags": { "types": "./dist/core/environment/feature-flags.d.ts", "import": "./dist/core/environment/feature-flags.js" },
+
+    "./core/*": { "types": "./dist/core/*/index.d.ts", "import": "./dist/core/*/index.js" }
   },
   "files": [
     "dist",
