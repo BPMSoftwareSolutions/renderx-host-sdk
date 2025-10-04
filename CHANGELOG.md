@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Config API**: New host-managed configuration service for plugins
+  - `getConfigValue(key)`: Get a configuration value from the host
+  - `hasConfigValue(key)`: Check if a configuration key exists
+  - `initConfig(initialConfig)`: Host function to initialize configuration with environment variable support
+  - `setConfigValue(key, value)`: Host function to set configuration values at runtime
+  - `removeConfigValue(key)`: Host function to remove configuration values
+  - Full TypeScript support with `ConfigAPI` type
+  - Subpath export: `@renderx-plugins/host-sdk/core/environment/config`
+
+### Features
+
+- **Environment Variable Support**: Seamless integration with Vite's `import.meta.env` for E2E/CI workflows
+- **Host-Managed Configuration**: Respects plugin boundaries - plugins access via SDK, not direct host imports
+- **SSR-Safe**: Returns `undefined` in Node.js environments without throwing errors
+- **Runtime Updates**: Host can update configuration values at runtime
+- **Thin Host Principle**: Host provides service, plugins consume via simple facade
+- **Upgrade Path**: Designed to support future backend proxy implementation without plugin code changes
+
+### Technical Details
+
+- Follows established facade pattern used by other SDK components
+- Configuration stored in `window.RenderX.config` for browser environments
+- Comprehensive unit test coverage with 30+ tests
+- TypeScript definitions included in global `Window.RenderX` interface
+- Compatible with existing build and test infrastructure
+
 ## [0.3.0] - 2025-09-10
 
 ### Added

@@ -142,6 +142,75 @@ const exists = await CssRegistry.hasClass('my-class');
 await CssRegistry.createClass(classDef);
 ```
 
+### Config API
+
+The Config API provides a simple key-value configuration service for plugins to access host-managed configuration:
+
+```typescript
+import { getConfigValue, hasConfigValue } from '@renderx-plugins/host-sdk';
+
+// Get a configuration value
+const apiKey = getConfigValue('API_KEY');
+const apiUrl = getConfigValue('API_URL') || 'https://default.api.com';
+
+// Check if a configuration key exists
+if (hasConfigValue('API_KEY')) {
+  const apiKey = getConfigValue('API_KEY');
+  // Use the API key
+}
+
+// Example: Configure API client
+const apiClient = {
+  baseURL: getConfigValue('API_URL'),
+  apiKey: getConfigValue('API_KEY'),
+  timeout: parseInt(getConfigValue('API_TIMEOUT') || '5000'),
+};
+```
+
+**Host Setup:**
+
+The host application should initialize the config service during startup:
+
+```typescript
+import { initConfig } from '@renderx-plugins/host-sdk/core/environment/config';
+
+// Initialize with environment variables (Vite pattern)
+initConfig({
+  API_KEY: import.meta.env.VITE_API_KEY,
+  API_URL: import.meta.env.VITE_API_URL,
+  FEATURE_FLAG: import.meta.env.VITE_FEATURE_FLAG,
+});
+
+// Or initialize with static values
+initConfig({
+  API_KEY: 'your-api-key',
+  API_URL: 'https://api.example.com',
+});
+```
+
+**Runtime Configuration:**
+
+The host can also update configuration at runtime:
+
+```typescript
+import { setConfigValue, removeConfigValue } from '@renderx-plugins/host-sdk/core/environment/config';
+
+// Update a config value
+setConfigValue('API_KEY', 'new-api-key');
+
+// Remove a config value
+removeConfigValue('OLD_CONFIG');
+```
+
+**Key Features:**
+
+- ✅ **Host-managed**: Configuration is controlled by the host application
+- ✅ **Plugin-friendly**: Plugins access via simple SDK functions
+- ✅ **Environment variable support**: Works seamlessly with Vite's `import.meta.env`
+- ✅ **E2E/CI friendly**: Easy to inject secrets via environment variables
+- ✅ **SSR-safe**: Returns `undefined` in Node.js environments
+- ✅ **Type-safe**: Full TypeScript support
+
 ## Node.js/SSR Support
 
 All APIs work seamlessly in Node.js environments with mock implementations. The facades automatically detect the environment and provide appropriate fallbacks:
