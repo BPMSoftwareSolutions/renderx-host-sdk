@@ -24,3 +24,7 @@ export type { ComponentSummary, Component, InventoryAPI } from "./types.js";
 // CSS Registry API
 export { hasClass, createClass, updateClass, onCssChanged, CssRegistry } from "./cssRegistry.js";
 export type { CssClassDef, CssRegistryAPI } from "./types.js";
+
+// Config API
+export { getConfigValue, hasConfigValue } from "./config.js";
+export type { ConfigAPI } from "./types.js";

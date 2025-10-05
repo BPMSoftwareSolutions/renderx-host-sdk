@@ -37,6 +37,7 @@
 
     "./core/environment/env": { "types": "./dist/core/environment/env.d.ts", "import": "./dist/core/environment/env.js" },
     "./core/environment/feature-flags": { "types": "./dist/core/environment/feature-flags.d.ts", "import": "./dist/core/environment/feature-flags.js" },
+    "./core/environment/config": { "types": "./dist/core/environment/config.d.ts", "import": "./dist/core/environment/config.js" },
 
     "./core/*": { "types": "./dist/core/*/index.d.ts", "import": "./dist/core/*/index.js" }
   },

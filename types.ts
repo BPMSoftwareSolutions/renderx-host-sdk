@@ -41,6 +41,12 @@ export interface CssRegistryAPI {
   onCssChanged(callback: (classes: CssClassDef[]) => void): Unsubscribe;
 }
 
+// Config API types
+export interface ConfigAPI {
+  getValue(key: string): string | undefined;
+  hasValue(key: string): boolean;
+}
+
 declare global {
   interface Window {
     renderxCommunicationSystem?: {
@@ -61,6 +67,7 @@ declare global {
       componentMapperConfig?: any;
       inventory?: InventoryAPI;
       cssRegistry?: CssRegistryAPI;
+      config?: ConfigAPI;
     };
   }
 }
