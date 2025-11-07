@@ -1,0 +1,35 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MusicalConductor.Avalonia", "MusicalConductor.Avalonia", "{07C2787E-EAC7-C090-1BA3-A61EC2A24D84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalConductor.Avalonia", "MusicalConductor.Avalonia\MusicalConductor.Avalonia.csproj", "{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderX.HostSDK.Avalonia", "RenderX.HostSDK.Avalonia\RenderX.HostSDK.Avalonia.csproj", "{A4263038-AFCF-4F2F-BECF-101C85E043B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3C82C72-7E77-4483-AD79-A25881C25A84}
+	EndGlobalSection
+EndGlobal
