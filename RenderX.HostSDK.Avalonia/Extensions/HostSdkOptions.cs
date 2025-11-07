@@ -13,9 +13,9 @@ public class HostSdkOptions
 
     /// <summary>
     /// Timeout in milliseconds for JavaScript operations.
-    /// Default: 5000 (5 seconds)
+    /// Default: 30000 (30 seconds)
     /// </summary>
-    public int OperationTimeoutMs { get; set; } = 5000;
+    public int OperationTimeoutMs { get; set; } = 30000;
 
     /// <summary>
     /// Custom path to the Host SDK JavaScript bundle.

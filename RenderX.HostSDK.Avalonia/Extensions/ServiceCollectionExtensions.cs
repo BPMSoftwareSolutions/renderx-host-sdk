@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RenderX.HostSDK.Avalonia.Engine;
 using RenderX.HostSDK.Avalonia.Interfaces;
+using RenderX.HostSDK.Avalonia.Services;
 
 namespace RenderX.HostSDK.Avalonia.Extensions;
 
@@ -48,15 +49,16 @@ public static class ServiceCollectionExtensions
             return new HostSdkEngineHost(logger);
         });
 
-        // Register core services as singletons
-        // Note: Actual implementations will be added in Phase 2
-        // For Phase 1, we're just setting up the infrastructure
+        // Register core services as singletons (Phase 2)
+        services.AddSingleton<IEventRouter, EventRouterService>();
+        services.AddSingleton<IInventoryAPI, InventoryService>();
+        services.AddSingleton<ICssRegistryAPI, CssRegistryService>();
 
-        // services.AddSingleton<IEventRouter, EventRouterService>();
-        // services.AddSingleton<IInventoryAPI, InventoryService>();
-        // services.AddSingleton<ICssRegistryAPI, CssRegistryService>();
-        // services.AddSingleton<IConfigService, ConfigService>();
-        // services.AddSingleton<IFeatureFlagsService, FeatureFlagsService>();
+        // Register configuration and environment services (Phase 3)
+        services.AddSingleton<IConfigService, ConfigService>();
+        services.AddSingleton<IFeatureFlagsService, FeatureFlagsService>();
+
+        // Additional services will be added in future phases
         // services.AddSingleton<IPluginManifestService, PluginManifestService>();
         // services.AddSingleton<IInteractionManifestService, InteractionManifestService>();
         // services.AddSingleton<ITopicsManifestService, TopicsManifestService>();
