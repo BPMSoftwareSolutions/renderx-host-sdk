@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalConductor.Avalonia",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderX.HostSDK.Avalonia", "RenderX.HostSDK.Avalonia\RenderX.HostSDK.Avalonia.csproj", "{A4263038-AFCF-4F2F-BECF-101C85E043B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "RenderX.HostSDK.Sample\SampleApp.csproj", "{80AC4CCA-EAD6-4AB2-A736-2AB3D22363D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenderX.HostSDK.Avalonia", "RenderX.HostSDK.Avalonia", "{BFFD6D22-5F26-4378-86D2-DD8C627F4283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderX.HostSDK.Avalonia.Tests", "RenderX.HostSDK.Avalonia\Tests\RenderX.HostSDK.Avalonia.Tests.csproj", "{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,12 +28,22 @@ Global
 		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4263038-AFCF-4F2F-BECF-101C85E043B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80AC4CCA-EAD6-4AB2-A736-2AB3D22363D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AC4CCA-EAD6-4AB2-A736-2AB3D22363D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AC4CCA-EAD6-4AB2-A736-2AB3D22363D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AC4CCA-EAD6-4AB2-A736-2AB3D22363D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF9B66B5-60F7-91A7-71A4-8EA5E5C1318D} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
+		{A4263038-AFCF-4F2F-BECF-101C85E043B8} = {BFFD6D22-5F26-4378-86D2-DD8C627F4283}
+		{2BDD4AFA-F18F-4AA3-9F6E-F2B215004B4A} = {BFFD6D22-5F26-4378-86D2-DD8C627F4283}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3C82C72-7E77-4483-AD79-A25881C25A84}
