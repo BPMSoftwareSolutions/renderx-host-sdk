@@ -58,10 +58,10 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IConfigService, ConfigService>();
         services.AddSingleton<IFeatureFlagsService, FeatureFlagsService>();
 
-        // Additional services will be added in future phases
-        // services.AddSingleton<IPluginManifestService, PluginManifestService>();
-        // services.AddSingleton<IInteractionManifestService, InteractionManifestService>();
-        // services.AddSingleton<ITopicsManifestService, TopicsManifestService>();
+        // Manifest services (Phase 4)
+        services.AddSingleton<IPluginManifestService, PluginManifestService>();
+        services.AddSingleton<IInteractionManifestService, InteractionManifestService>();
+        services.AddSingleton<ITopicsManifestService, TopicsManifestService>();
 
         return services;
     }
