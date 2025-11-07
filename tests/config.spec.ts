@@ -26,8 +26,8 @@ describe('Config API', () => {
 
     it('should delegate to host config when available', () => {
       const mockConfig = {
-        getValue: vi.fn().mockReturnValue('test-api-key'),
-        hasValue: vi.fn(),
+        get: vi.fn().mockReturnValue('test-api-key'),
+        has: vi.fn(),
       };
 
       (globalThis as any).window = {
@@ -36,13 +36,13 @@ describe('Config API', () => {
 
       const result = getConfigValue('API_KEY');
       expect(result).toBe('test-api-key');
-      expect(mockConfig.getValue).toHaveBeenCalledWith('API_KEY');
+      expect(mockConfig.get).toHaveBeenCalledWith('API_KEY');
     });
 
     it('should return undefined for non-existent keys', () => {
       const mockConfig = {
-        getValue: vi.fn().mockReturnValue(undefined),
-        hasValue: vi.fn(),
+        get: vi.fn().mockReturnValue(undefined),
+        has: vi.fn(),
       };
 
       (globalThis as any).window = {
@@ -51,17 +51,17 @@ describe('Config API', () => {
 
       const result = getConfigValue('NON_EXISTENT');
       expect(result).toBeUndefined();
-      expect(mockConfig.getValue).toHaveBeenCalledWith('NON_EXISTENT');
+      expect(mockConfig.get).toHaveBeenCalledWith('NON_EXISTENT');
     });
 
     it('should handle multiple calls with different keys', () => {
       const mockConfig = {
-        getValue: vi.fn((key: string) => {
+        get: vi.fn((key: string) => {
           if (key === 'API_KEY') return 'key-123';
           if (key === 'API_URL') return 'https://api.example.com';
           return undefined;
         }),
-        hasValue: vi.fn(),
+        has: vi.fn(),
       };
 
       (globalThis as any).window = {
@@ -71,7 +71,7 @@ describe('Config API', () => {
       expect(getConfigValue('API_KEY')).toBe('key-123');
       expect(getConfigValue('API_URL')).toBe('https://api.example.com');
       expect(getConfigValue('OTHER')).toBeUndefined();
-      expect(mockConfig.getValue).toHaveBeenCalledTimes(3);
+      expect(mockConfig.get).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -94,8 +94,8 @@ describe('Config API', () => {
 
     it('should delegate to host config when available', () => {
       const mockConfig = {
-        getValue: vi.fn(),
-        hasValue: vi.fn().mockReturnValue(true),
+        get: vi.fn(),
+        has: vi.fn().mockReturnValue(true),
       };
 
       (globalThis as any).window = {
@@ -104,13 +104,13 @@ describe('Config API', () => {
 
       const result = hasConfigValue('API_KEY');
       expect(result).toBe(true);
-      expect(mockConfig.hasValue).toHaveBeenCalledWith('API_KEY');
+      expect(mockConfig.has).toHaveBeenCalledWith('API_KEY');
     });
 
     it('should return false for non-existent keys', () => {
       const mockConfig = {
-        getValue: vi.fn(),
-        hasValue: vi.fn().mockReturnValue(false),
+        get: vi.fn(),
+        has: vi.fn().mockReturnValue(false),
       };
 
       (globalThis as any).window = {
@@ -119,13 +119,13 @@ describe('Config API', () => {
 
       const result = hasConfigValue('NON_EXISTENT');
       expect(result).toBe(false);
-      expect(mockConfig.hasValue).toHaveBeenCalledWith('NON_EXISTENT');
+      expect(mockConfig.has).toHaveBeenCalledWith('NON_EXISTENT');
     });
 
     it('should handle multiple calls with different keys', () => {
       const mockConfig = {
-        getValue: vi.fn(),
-        hasValue: vi.fn((key: string) => {
+        get: vi.fn(),
+        has: vi.fn((key: string) => {
           return key === 'API_KEY' || key === 'API_URL';
         }),
       };
@@ -137,15 +137,15 @@ describe('Config API', () => {
       expect(hasConfigValue('API_KEY')).toBe(true);
       expect(hasConfigValue('API_URL')).toBe(true);
       expect(hasConfigValue('OTHER')).toBe(false);
-      expect(mockConfig.hasValue).toHaveBeenCalledTimes(3);
+      expect(mockConfig.has).toHaveBeenCalledTimes(3);
     });
   });
 
   describe('Integration scenarios', () => {
     it('should work together - check before get', () => {
       const mockConfig = {
-        getValue: vi.fn((key: string) => key === 'API_KEY' ? 'secret-key' : undefined),
-        hasValue: vi.fn((key: string) => key === 'API_KEY'),
+        get: vi.fn((key: string) => key === 'API_KEY' ? 'secret-key' : undefined),
+        has: vi.fn((key: string) => key === 'API_KEY'),
       };
 
       (globalThis as any).window = {
@@ -157,8 +157,8 @@ describe('Config API', () => {
         expect(value).toBe('secret-key');
       }
 
-      expect(mockConfig.hasValue).toHaveBeenCalledWith('API_KEY');
-      expect(mockConfig.getValue).toHaveBeenCalledWith('API_KEY');
+      expect(mockConfig.has).toHaveBeenCalledWith('API_KEY');
+      expect(mockConfig.get).toHaveBeenCalledWith('API_KEY');
     });
 
     it('should handle missing config gracefully', () => {

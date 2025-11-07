@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2025-10-05
+
+### Fixed
+
+- **CRITICAL**: Fixed incorrect API method calls in Config API
+  - Changed `config.getValue(key)` to `config.get(key)` in `config.ts` (line 31)
+  - Changed `config.hasValue(key)` to `config.has(key)` in `config.ts` (line 61)
+  - Updated `ConfigAPI` interface in `types.ts` to use `get()` and `has()` methods
+  - Updated host configuration service in `core/environment/config.ts` to implement `get()` and `has()` methods
+  - This fix resolves the runtime error: `TypeError: t.hasValue is not a function`
+  - All plugins using the host-SDK configuration API will now work correctly with host applications implementing the standard `get()`/`has()` interface
+
+### Changed
+
+- Updated all test files to use the corrected method names (`get`/`has` instead of `getValue`/`hasValue`)
+
+## [1.0.5] - 2025-10-04
+
 ### Added
 
 - **Config API**: New host-managed configuration service for plugins

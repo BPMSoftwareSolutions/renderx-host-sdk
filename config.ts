@@ -28,7 +28,7 @@ export function getConfigValue(key: string): string | undefined {
     return undefined;
   }
 
-  return config.getValue(key);
+  return config.get(key);
 }
 
 /**
@@ -58,6 +58,6 @@ export function hasConfigValue(key: string): boolean {
     return false;
   }
 
-  return config.hasValue(key);
+  return config.has(key);
 }
 
