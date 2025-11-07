@@ -31,4 +31,11 @@
     <EmbeddedResource Include="Resources\host-sdk-bundle.js" />
   </ItemGroup>
 
+  <!-- Exclude Tests folder from compilation -->
+  <ItemGroup>
+    <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Tests\**" />
+  </ItemGroup>
+
 </Project>

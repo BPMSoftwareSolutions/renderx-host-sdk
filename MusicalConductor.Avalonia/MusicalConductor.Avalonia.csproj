@@ -39,12 +39,6 @@
     <Compile Remove="MusicalConductor.AvaloniaV2\**\*.cs" />
     <Compile Remove="MusicalConductor.Analyzers\**\*.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MusicalConductor.Core\ExampleHandler.cs" />
-    <Compile Include="MusicalConductor.Core\HandlerBase.cs" />
-    <Compile Include="MusicalConductor.Core\HandlerRegistry.cs" />
-    <Compile Include="MusicalConductor.Core\ServiceCollectionExtensions.cs" />
-  </ItemGroup>
 
 </Project>
 
