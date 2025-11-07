@@ -42,11 +42,11 @@ export function initConfig(initialConfig?: Record<string, string | undefined>): 
 
   // Create the config API
   const configAPI: ConfigAPI = {
-    getValue(key: string): string | undefined {
+    get(key: string): string | undefined {
       return configStore.get(key);
     },
 
-    hasValue(key: string): boolean {
+    has(key: string): boolean {
       return configStore.has(key);
     },
   };

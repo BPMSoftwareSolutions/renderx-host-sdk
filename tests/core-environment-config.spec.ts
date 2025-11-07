@@ -22,10 +22,10 @@ describe('Core Environment Config', () => {
   describe('initConfig', () => {
     it('should initialize empty config when no initial config provided', () => {
       const config = initConfig();
-      
+
       expect(config).toBeDefined();
-      expect(config.getValue('ANY_KEY')).toBeUndefined();
-      expect(config.hasValue('ANY_KEY')).toBe(false);
+      expect(config.get('ANY_KEY')).toBeUndefined();
+      expect(config.has('ANY_KEY')).toBe(false);
     });
 
     it('should initialize with provided config values', () => {
@@ -34,10 +34,10 @@ describe('Core Environment Config', () => {
         API_URL: 'https://api.example.com',
       });
 
-      expect(config.getValue('API_KEY')).toBe('test-key');
-      expect(config.getValue('API_URL')).toBe('https://api.example.com');
-      expect(config.hasValue('API_KEY')).toBe(true);
-      expect(config.hasValue('API_URL')).toBe(true);
+      expect(config.get('API_KEY')).toBe('test-key');
+      expect(config.get('API_URL')).toBe('https://api.example.com');
+      expect(config.has('API_KEY')).toBe(true);
+      expect(config.has('API_URL')).toBe(true);
     });
 
     it('should filter out undefined values from initial config', () => {
@@ -47,10 +47,10 @@ describe('Core Environment Config', () => {
         API_URL: 'https://api.example.com',
       });
 
-      expect(config.getValue('API_KEY')).toBe('test-key');
-      expect(config.getValue('API_URL')).toBe('https://api.example.com');
-      expect(config.hasValue('UNDEFINED_KEY')).toBe(false);
-      expect(config.getValue('UNDEFINED_KEY')).toBeUndefined();
+      expect(config.get('API_KEY')).toBe('test-key');
+      expect(config.get('API_URL')).toBe('https://api.example.com');
+      expect(config.has('UNDEFINED_KEY')).toBe(false);
+      expect(config.get('UNDEFINED_KEY')).toBeUndefined();
     });
 
     it('should attach config to window.RenderX.config', () => {
@@ -62,7 +62,7 @@ describe('Core Environment Config', () => {
 
       expect((globalThis as any).window.RenderX).toBeDefined();
       expect((globalThis as any).window.RenderX.config).toBeDefined();
-      expect((globalThis as any).window.RenderX.config.getValue('API_KEY')).toBe('test-key');
+      expect((globalThis as any).window.RenderX.config.get('API_KEY')).toBe('test-key');
     });
 
     it('should clear existing config when re-initialized', () => {
@@ -71,15 +71,15 @@ describe('Core Environment Config', () => {
         OLD_VALUE: 'should-be-removed',
       });
 
-      expect(config1.getValue('API_KEY')).toBe('old-key');
-      expect(config1.getValue('OLD_VALUE')).toBe('should-be-removed');
+      expect(config1.get('API_KEY')).toBe('old-key');
+      expect(config1.get('OLD_VALUE')).toBe('should-be-removed');
 
       const config2 = initConfig({
         API_KEY: 'new-key',
       });
 
-      expect(config2.getValue('API_KEY')).toBe('new-key');
-      expect(config2.hasValue('OLD_VALUE')).toBe(false);
+      expect(config2.get('API_KEY')).toBe('new-key');
+      expect(config2.has('OLD_VALUE')).toBe(false);
     });
 
     it('should handle empty string values', () => {
@@ -87,8 +87,8 @@ describe('Core Environment Config', () => {
         EMPTY_KEY: '',
       });
 
-      expect(config.getValue('EMPTY_KEY')).toBe('');
-      expect(config.hasValue('EMPTY_KEY')).toBe(true);
+      expect(config.get('EMPTY_KEY')).toBe('');
+      expect(config.has('EMPTY_KEY')).toBe(true);
     });
   });
 
@@ -98,8 +98,8 @@ describe('Core Environment Config', () => {
       
       setConfigValue('NEW_KEY', 'new-value');
       
-      expect(config.getValue('NEW_KEY')).toBe('new-value');
-      expect(config.hasValue('NEW_KEY')).toBe(true);
+      expect(config.get('NEW_KEY')).toBe('new-value');
+      expect(config.has('NEW_KEY')).toBe(true);
     });
 
     it('should update an existing config value', () => {
@@ -107,11 +107,11 @@ describe('Core Environment Config', () => {
         API_KEY: 'old-key',
       });
 
-      expect(config.getValue('API_KEY')).toBe('old-key');
+      expect(config.get('API_KEY')).toBe('old-key');
 
       setConfigValue('API_KEY', 'new-key');
 
-      expect(config.getValue('API_KEY')).toBe('new-key');
+      expect(config.get('API_KEY')).toBe('new-key');
     });
 
     it('should work with window.RenderX.config', () => {
@@ -120,7 +120,7 @@ describe('Core Environment Config', () => {
 
       setConfigValue('API_KEY', 'updated');
 
-      expect((globalThis as any).window.RenderX.config.getValue('API_KEY')).toBe('updated');
+      expect((globalThis as any).window.RenderX.config.get('API_KEY')).toBe('updated');
     });
   });
 
@@ -131,13 +131,13 @@ describe('Core Environment Config', () => {
         API_URL: 'https://api.example.com',
       });
 
-      expect(config.hasValue('API_KEY')).toBe(true);
+      expect(config.has('API_KEY')).toBe(true);
 
       removeConfigValue('API_KEY');
 
-      expect(config.hasValue('API_KEY')).toBe(false);
-      expect(config.getValue('API_KEY')).toBeUndefined();
-      expect(config.hasValue('API_URL')).toBe(true);
+      expect(config.has('API_KEY')).toBe(false);
+      expect(config.get('API_KEY')).toBeUndefined();
+      expect(config.has('API_URL')).toBe(true);
     });
 
     it('should not throw when removing non-existent key', () => {
@@ -147,7 +147,7 @@ describe('Core Environment Config', () => {
         removeConfigValue('NON_EXISTENT');
       }).not.toThrow();
 
-      expect(config.hasValue('NON_EXISTENT')).toBe(false);
+      expect(config.has('NON_EXISTENT')).toBe(false);
     });
   });
 
@@ -204,9 +204,9 @@ describe('Core Environment Config', () => {
       clearConfig();
 
       expect(getAllConfigKeys()).toEqual([]);
-      expect(config.hasValue('API_KEY')).toBe(false);
-      expect(config.hasValue('API_URL')).toBe(false);
-      expect(config.hasValue('DATABASE_URL')).toBe(false);
+      expect(config.has('API_KEY')).toBe(false);
+      expect(config.has('API_URL')).toBe(false);
+      expect(config.has('DATABASE_URL')).toBe(false);
     });
 
     it('should work on empty config', () => {
@@ -235,9 +235,9 @@ describe('Core Environment Config', () => {
         FEATURE_FLAG: envVars.VITE_FEATURE_FLAG,
       });
 
-      expect(config.getValue('API_KEY')).toBe('env-api-key');
-      expect(config.getValue('API_URL')).toBe('https://env.api.com');
-      expect(config.hasValue('FEATURE_FLAG')).toBe(false);
+      expect(config.get('API_KEY')).toBe('env-api-key');
+      expect(config.get('API_URL')).toBe('https://env.api.com');
+      expect(config.has('FEATURE_FLAG')).toBe(false);
     });
 
     it('should support runtime configuration updates', () => {
@@ -249,12 +249,12 @@ describe('Core Environment Config', () => {
       setConfigValue('API_KEY', 'runtime-key');
       setConfigValue('NEW_CONFIG', 'runtime-value');
 
-      expect(config.getValue('API_KEY')).toBe('runtime-key');
-      expect(config.getValue('NEW_CONFIG')).toBe('runtime-value');
+      expect(config.get('API_KEY')).toBe('runtime-key');
+      expect(config.get('NEW_CONFIG')).toBe('runtime-value');
 
       // Remove at runtime
       removeConfigValue('NEW_CONFIG');
-      expect(config.hasValue('NEW_CONFIG')).toBe(false);
+      expect(config.has('NEW_CONFIG')).toBe(false);
     });
 
     it('should work with plugin SDK facade', () => {
@@ -268,10 +268,10 @@ describe('Core Environment Config', () => {
       // Simulate plugin using the SDK facade
       const pluginConfig = (globalThis as any).window.RenderX.config;
       
-      expect(pluginConfig.getValue('API_KEY')).toBe('test-key');
-      expect(pluginConfig.hasValue('API_URL')).toBe(true);
-      expect(pluginConfig.getValue('NON_EXISTENT')).toBeUndefined();
-      expect(pluginConfig.hasValue('NON_EXISTENT')).toBe(false);
+      expect(pluginConfig.get('API_KEY')).toBe('test-key');
+      expect(pluginConfig.has('API_URL')).toBe(true);
+      expect(pluginConfig.get('NON_EXISTENT')).toBeUndefined();
+      expect(pluginConfig.has('NON_EXISTENT')).toBe(false);
     });
   });
 });

@@ -43,8 +43,8 @@ export interface CssRegistryAPI {
 
 // Config API types
 export interface ConfigAPI {
-  getValue(key: string): string | undefined;
-  hasValue(key: string): boolean;
+  get(key: string): string | undefined;
+  has(key: string): boolean;
 }
 
 declare global {
