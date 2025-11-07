@@ -85,8 +85,43 @@ public class HostSdkEngineHost : IDisposable
             _engine.Execute(bundleCode);
             _logger.LogInformation("✅ Host SDK bundle loaded successfully");
 
-            // Get reference to window.RenderX
+            // Ensure required APIs exist; fill any missing with safe stubs (non-promise to avoid microtask hangs)
+            _engine.Execute(@"
+                if (typeof window === 'undefined') { window = {}; }
+                window.RenderX = window.RenderX || {};
+                window.RenderX.EventRouter = window.RenderX.EventRouter || {
+                    subscribe: function() { return function() {}; },
+                    publish: function() { /* no-op */ }
+                };
+                window.RenderX.inventory = window.RenderX.inventory || {
+                    listComponents: function() { return []; },
+                    getComponentById: function() { return null; },
+                    onInventoryChanged: function() { return function() {}; }
+                };
+                window.RenderX.cssRegistry = window.RenderX.cssRegistry || {
+                    hasClass: function() { return false; },
+                    createClass: function() { /* no-op */ },
+                    updateClass: function() { /* no-op */ },
+                    onCssChanged: function() { return function() {}; }
+                };
+                window.RenderX.config = window.RenderX.config || {
+                    get: function() { return undefined; },
+                    has: function() { return false; }
+                };
+                window.RenderX.featureFlags = window.RenderX.featureFlags || {
+                    isFlagEnabled: function() { return false; },
+                    getFlagMeta: function() { return undefined; },
+                    getAllFlags: function() { return {}; }
+                };
+            ");
+
+            // Get reference to window.RenderX (after augmentation)
             _hostSdkGlobal = _engine.Evaluate("window.RenderX");
+            if (_hostSdkGlobal.IsUndefined() || _hostSdkGlobal.IsNull())
+            {
+                _logger.LogWarning("⚠️ window.RenderX not defined after bundle execution; falling back to stub.");
+                InitializeStubHostSdk();
+            }
         }
         catch (Exception ex)
         {
@@ -105,17 +140,17 @@ public class HostSdkEngineHost : IDisposable
             window.RenderX = {
                 EventRouter: {
                     subscribe: function() { return function() {}; },
-                    publish: function() { return Promise.resolve(); }
+                    publish: function() { /* no-op */ }
                 },
                 inventory: {
-                    listComponents: function() { return Promise.resolve([]); },
-                    getComponentById: function() { return Promise.resolve(null); },
+                    listComponents: function() { return []; },
+                    getComponentById: function() { return null; },
                     onInventoryChanged: function() { return function() {}; }
                 },
                 cssRegistry: {
-                    hasClass: function() { return Promise.resolve(false); },
-                    createClass: function() { return Promise.resolve(); },
-                    updateClass: function() { return Promise.resolve(); },
+                    hasClass: function() { return false; },
+                    createClass: function() { /* no-op */ },
+                    updateClass: function() { /* no-op */ },
                     onCssChanged: function() { return function() {}; }
                 },
                 config: {
