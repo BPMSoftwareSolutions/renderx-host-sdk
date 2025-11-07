@@ -9,7 +9,7 @@ This repo contains a comprehensive xUnit test suite for the Avalonia Host SDK. B
 dotnet build MusicalConductor.sln -c Release --nologo
 
 # Run only the Host SDK tests
-Dotnet test RenderX.HostSDK.Avalonia/Tests/RenderX.HostSDK.Avalonia.Tests.csproj -c Release --nologo
+dotnet test RenderX.HostSDK.Avalonia/Tests/RenderX.HostSDK.Avalonia.Tests.csproj -c Release --nologo
 ````
 </augment_code_snippet>
 

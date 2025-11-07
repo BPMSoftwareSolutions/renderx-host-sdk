@@ -73,6 +73,7 @@ Example: get inventory and register CSS classes.
 <augment_code_snippet mode="EXCERPT">
 ````csharp
 using RenderX.HostSDK.Avalonia.Interfaces;
+using RenderX.HostSDK.Avalonia.Models;
 
 public sealed class UiInit(
     IInventoryAPI inventory,
@@ -87,7 +88,11 @@ public sealed class UiInit(
         }
 
         // Register a CSS utility class
-        await css.RegisterClassAsync(".rx-hidden", "display:none;");
+        await css.CreateClassAsync(new CssClassDef
+        {
+            Name = "rx-hidden",
+            Rules = ".rx-hidden { display: none; }"
+        });
     }
 }
 ````
