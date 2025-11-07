@@ -54,9 +54,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IInventoryAPI, InventoryService>();
         services.AddSingleton<ICssRegistryAPI, CssRegistryService>();
 
+        // Register configuration and environment services (Phase 3)
+        services.AddSingleton<IConfigService, ConfigService>();
+        services.AddSingleton<IFeatureFlagsService, FeatureFlagsService>();
+
         // Additional services will be added in future phases
-        // services.AddSingleton<IConfigService, ConfigService>();
-        // services.AddSingleton<IFeatureFlagsService, FeatureFlagsService>();
         // services.AddSingleton<IPluginManifestService, PluginManifestService>();
         // services.AddSingleton<IInteractionManifestService, InteractionManifestService>();
         // services.AddSingleton<ITopicsManifestService, TopicsManifestService>();

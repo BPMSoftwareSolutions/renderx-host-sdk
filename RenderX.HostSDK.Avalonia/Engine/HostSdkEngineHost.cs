@@ -205,6 +205,54 @@ public class HostSdkEngineHost : IDisposable
     }
 
     /// <summary>
+    /// Call a method on the Config API.
+    /// </summary>
+    /// <param name="methodName">The method name to call.</param>
+    /// <param name="args">Arguments to pass to the method.</param>
+    /// <returns>The result of the method call.</returns>
+    public JsValue CallConfigMethod(string methodName, params object[] args)
+    {
+        var config = GetGlobalObject("window.RenderX.config");
+        if (config.IsUndefined())
+        {
+            throw new InvalidOperationException("Config API not available");
+        }
+
+        var method = config.AsObject().Get(methodName);
+        if (method.IsNull() || method.IsUndefined())
+        {
+            throw new InvalidOperationException($"Config.{methodName} not found");
+        }
+
+        var jsArgs = args.Select(ConvertToJsValue).ToArray();
+        return _engine.Invoke(method, config, jsArgs);
+    }
+
+    /// <summary>
+    /// Call a method on the Feature Flags API.
+    /// </summary>
+    /// <param name="methodName">The method name to call.</param>
+    /// <param name="args">Arguments to pass to the method.</param>
+    /// <returns>The result of the method call.</returns>
+    public JsValue CallFeatureFlagsMethod(string methodName, params object[] args)
+    {
+        var featureFlags = GetGlobalObject("window.RenderX.featureFlags");
+        if (featureFlags.IsUndefined())
+        {
+            throw new InvalidOperationException("Feature Flags API not available");
+        }
+
+        var method = featureFlags.AsObject().Get(methodName);
+        if (method.IsNull() || method.IsUndefined())
+        {
+            throw new InvalidOperationException($"FeatureFlags.{methodName} not found");
+        }
+
+        var jsArgs = args.Select(ConvertToJsValue).ToArray();
+        return _engine.Invoke(method, featureFlags, jsArgs);
+    }
+
+    /// <summary>
     /// Get a global object by path (e.g., "window.RenderX.inventory").
     /// </summary>
     /// <param name="path">The dot-separated path to the object.</param>
